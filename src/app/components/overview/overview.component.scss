@@ -1,0 +1,38 @@
+h1{
+  font-family: 'Josefin Sans', sans-serif;
+  text-align: center;
+}
+
+.extra-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  border-top: 1px solid lightgrey;
+  padding-top: 14px;
+  margin-bottom: 14px;
+}
+
+button {
+  right: 10px;
+  top: 7px;
+  outline:none;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: white;
+  margin-right: 10px;
+  appearance: none;
+  border: none;
+  border-radius: 3px;
+  padding: 10px;
+  &:hover {
+    background: lightgreen;
+    cursor: pointer;
+  }
+}
+
+.active {
+  background: lightgreen;
+}
+

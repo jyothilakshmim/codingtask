@@ -1,0 +1,11 @@
+<div class="todo-item" id="{{todo.id}}">
+  <div class="todo-item-left">
+    <label>
+      <input type="checkbox" class="option-input checkbox" [(ngModel)]="todo.completed" (click)="todoService.todoCompleted(todo.id)"/>
+    </label>
+    <div  class="todo-item-label" [ngClass]="{ 'completed' : todo.completed }">{{ todo.title }}</div>
+  </div>
+  <div class="remove-item" (click)="todoService.deleteTodo(todo.id,todo.completed)" >
+    &times;
+  </div>
+</div>

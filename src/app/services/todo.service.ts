@@ -6,121 +6,90 @@ import { Todo } from '../interfaces/todo';
 })
 export class TodoService {
   todoTitle: string = '';
-  idForTodo: number = 4;
-  beforeEditCache: string = '';
+  idForTodo: number = 0;
   filter: string = 'all';
-  anyRemainingModel: boolean = true;
-  todos: Todo[] = [
-    {
-      'id': 1,
-      'title': 'Finish Angular Screencast',
-      'completed': false,
-      'editing': false,
-    },
-    {
-      'id': 2,
-      'title': 'Take over world',
-      'completed': false,
-      'editing': false,
-    },
-    {
-      'id': 3,
-      'title': 'One more thing',
-      'completed': false,
-      'editing': false,
-    },
-  ];
+  todos: Todo[] = [];
+  remaining: number = 0;
+  atLeastOneCompleted: boolean = false;
 
   constructor() {
-    /* let todos = this.getTodos();
-    if(todos.length == 0) {
+    this.todos = this.getTodos();
+    this.updateRemainigCompleted();
+    if(this.todos.length == 0) {
       this.idForTodo = 0;
     }
     else{
-      let maxId = todos[todos.length-1].id;
+      let maxId = this.todos[0].id;
       this.idForTodo= maxId+1;
-    } */
+    }
   }
 
-  /* public getTodos():Todo[] {
+  public getTodos():Todo[] {
     let localStorageItem = JSON.parse(localStorage.getItem('todos'));
     return localStorageItem == null ? [] : localStorageItem.todos;
-  } */
+  }
 
   addTodo(todoTitle: string): void {
     if (todoTitle.trim().length === 0) {
       return;
     }
-    //let todos = this.getTodos();
-    //todos.unshift({})
     this.todos.unshift({
       id: this.idForTodo,
       title: todoTitle,
-      completed: false,
-      editing: false
+      completed: false
     })
-    // this.setLocalStorageTodos(todos)
+    this.setLocalStorageTodos(this.todos);
     this.idForTodo++;
   }
 
-
-
-  deleteTodo(id: number, completed:boolean): void {
-    //let todos = this.getTodos();
+  deleteTodo(id: number, completed:boolean): boolean {
+    let returnValue = true;
     if(!completed){
-    if(confirm("Are you sure to delete "))
-    {
-      //todos = todos.filter(todo => todo.id !== id);
-    this.todos = this.todos.filter(todo => todo.id !== id);
-    }
-  }
-    else{
-      //todos = todos.filter(todo => todo.id !== id);
+      if(confirm("Are you sure to delete "))
+        {
+          this.todos = this.todos.filter(todo => todo.id !== id);
+        } else {
+          returnValue = false;
+        }
+      }
+    else {
       this.todos = this.todos.filter(todo => todo.id !== id);
     }
-    //this.setLocalStorageTodos(todos);
+    this.setLocalStorageTodos(this.todos);
+    return returnValue;
   }
 
-  remaining(): number {
-    //let todos = this.getTodos();
-    //return todos.filter(todo => !todo.completed).length;
-    return this.todos.filter(todo => !todo.completed).length;
+  todoCompleted(id: number): void {
+    this.todos.map((todo: Todo) => {
+      if(todo.id === id) {
+        todo.completed = !todo.completed;
+      }
+    })
+    this.setLocalStorageTodos(this.todos);
   }
 
-  atLeastOneCompleted(): boolean {
-    //let todos = this.getTodos();
-    // return todos.filter(todo => todo.completed).length > 0;
-    return this.todos.filter(todo => todo.completed).length > 0;
+  updateRemainigCompleted(): void {
+    this.remaining = this.todos.filter(todo => !todo.completed).length;
+    this.atLeastOneCompleted = this.todos.filter(todo => todo.completed).length > 0;
   }
 
   clearCompleted(): void {
-    //let todos = this.getTodos();
-    //todos = this.todos.filter(todo => !todo.completed);
     this.todos = this.todos.filter(todo => !todo.completed);
+    this.setLocalStorageTodos(this.todos);
   }
 
-
-
-  anyRemaining(): boolean {
-    return this.remaining() !== 0;
-  }
-
-  todosFiltered(): Todo[] {
-    //let todos = this.getTodos();
-    if (this.filter === 'all') {
-      return this.todos;
-      //return todos;
-    } else if (this.filter === 'active') {
-      return this.todos.filter(todo => !todo.completed);
-      //return todos.filter(todo => !todo.completed);
+  todosFiltered(filter = 'all'): void {
+    this.filter = filter;
+    this.todos = this.getTodos();
+    if (this.filter === 'active') {
+      this.todos = this.todos.filter(todo => !todo.completed);
     } else if (this.filter === 'completed') {
-      return this.todos.filter(todo => todo.completed);
-      // return todos.filter(todo => todo.completed);
+      this.todos =  this.todos.filter(todo => todo.completed);
     }
-    // return todos
-    return this.todos;
   }
-  /* private setLocalStorageTodos (todos:Todo[]: void){
-    localStorage.setItem('todos', JSON.stringify({todos: todos});)
-  } */
+
+  private setLocalStorageTodos (todos:Todo[]){
+    this.updateRemainigCompleted();
+    localStorage.setItem('todos', JSON.stringify({'todos': todos}));
+  }
 }

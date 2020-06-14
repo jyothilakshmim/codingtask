@@ -1,0 +1,73 @@
+.option-input {
+  appearance: none;
+  height: 30px;
+  width: 30px;
+  background: #cbd1d8;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.option-input:hover {
+  background: #9faab7;
+}
+
+.option-input:checked {
+  background: rgb(38, 184, 9);
+}
+
+.option-input:checked::before {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  content: '✔';
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.option-input.checkbox {
+  border-radius: 50%;
+}
+
+.todo-item {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation-duration: 0.3s;
+  cursor: pointer;
+  &:hover {
+    color: black;
+    border-style: solid;
+    border-width: 1.5px;
+    border-radius: 3px;
+  }
+}
+
+.remove-item {
+  cursor: pointer;
+  margin-left: 14px;
+  font-size: 35px;
+  &:hover {
+    color: rgb(199, 10, 10);
+  }
+}
+
+.todo-item-left { // later
+  display: flex;
+  align-items: center;
+}
+
+.todo-item-label {
+  padding: 10px;
+  margin-left: 12px;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: grey;
+}

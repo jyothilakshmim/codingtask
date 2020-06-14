@@ -1,0 +1,24 @@
+<h1>TODO</h1>
+<app-add-task></app-add-task>
+<div class="tasklist" role="listbox">
+  <task *ngFor="let todo of todoService.todos" [todo]="todo" tabindex="1"></task>
+</div>
+
+<div class="extra-container" *ngIf="todoService.todos.length">
+  <div *ngIf="todoService.filter === 'all'">{{ todoService.remaining }} task(s) left and {{ todoService.todos.length - todoService.remaining }} task(s) completed</div>
+  <div *ngIf="todoService.filter === 'active'">{{ todoService.todos.length }} task(s) left</div>
+  <div *ngIf="todoService.filter === 'completed'">{{ todoService.todos.length }} task(s) completed</div>
+</div>
+
+<div class="extra-container">
+  <div>
+    <button [ngClass]="{'active': todoService.filter === 'all'}" (click)="todoService.todosFiltered('all')">All</button>
+    <button [ngClass]="{'active': todoService.filter === 'active'}" (click)="todoService.todosFiltered('active')">ToDo</button>
+    <button [ngClass]="{'active': todoService.filter === 'completed'}" (click)="todoService.todosFiltered('completed')">Done</button>
+  </div>
+  <div *ngIf="todoService.atLeastOneCompleted">
+    <div *ngIf="todoService.filter === 'all'">
+    <button (click)="todoService.clearCompleted()">Clear Completed</button>
+  </div>
+</div>
+</div>
